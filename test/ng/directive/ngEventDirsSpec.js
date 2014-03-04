@@ -39,4 +39,23 @@ describe('event directives', function() {
       expect($rootScope.formSubmitted).toEqual('foo');
     }));
   });
+
+
+  describe('ngFocus', function() {
+
+    it('should allow focusing on a field from an angular context', function() {
+      element = $compile(
+        '<div>' +
+        '  <input ng-focus="focused = true">' +
+        '  <button ng-click="focusInput()">' +
+        '</div>')($rootScope);
+      $rootScope.$digest();
+      expect($rootScope.focused).not.toBeDefined();
+      $rootScope.focusInput = function() {
+        element.children()[0].focus();
+      }
+      browserTrigger(element.children()[1]);
+      expect($rootScope.focused).toBeTruthy();
+    });
+  })
 });
